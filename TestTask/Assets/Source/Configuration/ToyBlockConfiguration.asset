@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e92b880d0694b7482b39f53ce65b49a, type: 3}
+  m_Name: ToyBlockConfiguration
+  m_EditorClassIdentifier: 
+  <ToyBlockDatas>k__BackingField:
+  - <Index>k__BackingField: 0
+    <SpriteOfBlock>k__BackingField: {fileID: 756445285, guid: e383060c7b9124e43a678e2405346bb6, type: 3}
+  - <Index>k__BackingField: 1
+    <SpriteOfBlock>k__BackingField: {fileID: 65081829, guid: e383060c7b9124e43a678e2405346bb6, type: 3}
+  - <Index>k__BackingField: 2
+    <SpriteOfBlock>k__BackingField: {fileID: 1109397921, guid: e383060c7b9124e43a678e2405346bb6, type: 3}
+  - <Index>k__BackingField: 3
+    <SpriteOfBlock>k__BackingField: {fileID: 515332825, guid: e383060c7b9124e43a678e2405346bb6, type: 3}
