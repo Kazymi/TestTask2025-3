@@ -11,5 +11,6 @@ public class MediatorInstaller : MonoInstaller
         Container.Bind<ToyBlockInteractiveMediator>().AsSingle();
         Container.BindInterfacesAndSelfTo<TrashScreenMediator>().AsSingle();
         Container.BindInterfacesAndSelfTo<ForToyBlockScreenMediator>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PopupTextSpawnerMediator>().AsSingle();
     }
 }

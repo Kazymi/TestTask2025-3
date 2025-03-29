@@ -8,18 +8,21 @@ using Random = UnityEngine.Random;
 public class ForToyBlockScreenMediator : ScreenMediatorBase, IInitializable
 {
     [Inject] private ItemDragMediator itemDragMediator;
+    [Inject] private ItemDropProxy itemDropProxy;
     [Inject] private ForToyBlockScreenMediator forToyBlockScreenMediator;
     [Inject] private ToyBlockGameConfiguration toyBlockGameConfiguration;
 
     private List<IDraggable> droppedItems = new();
     private Transform startPosition;
 
-    public event Action<(Transform droppedItem, Vector3 dropPosition)> OnItemAttachToTowerEvent;
-    public event Action<Transform> OnItemOutsideAreaEvent;
+    public event Action<(IDraggable droppedItem, Vector3 dropPosition)> OnItemAttachToTowerEvent;
+    public event Action<IDraggable> OnItemOutsideAreaEvent;
+    public event Action OnDropAtTowerEvent; 
+    public event Action OnDropOutsideTowerEvent; 
 
     public void Initialize()
     {
-        itemDragMediator.OnDragFinishEvent += OnDragFinishHandler;
+        itemDropProxy.OnDropForToyBlockScreenEvent += OnDropForToyBlockScreenHandler;
         itemDragMediator.OnDragStartEvent += OnDragStartHandler;
     }
 
@@ -64,7 +67,7 @@ public class ForToyBlockScreenMediator : ScreenMediatorBase, IInitializable
             }
             else
             {
-                OnItemOutsideAreaEvent?.Invoke(item.dragTransform);
+                OnItemOutsideAreaEvent?.Invoke(item);
             }
         }
     }
@@ -85,28 +88,22 @@ public class ForToyBlockScreenMediator : ScreenMediatorBase, IInitializable
             }
         }
 
-        OnItemAttachToTowerEvent?.Invoke((dragItem.dragTransform, endPosition));
+        OnItemAttachToTowerEvent?.Invoke((dragItem, endPosition));
         droppedItems.Add(dragItem);
     }
 
-    private void OnDragFinishHandler(IDraggable dragItem)
+    private void OnDropForToyBlockScreenHandler(IDraggable dragItem)
     {
-        ItemDrop(dragItem);
-    }
-
-    private void ItemDrop(IDraggable dragItem)
-    {
-        if (IsLocatedWithinArena(dragItem.dragTransform.position))
+        var localPosition = startPosition.InverseTransformPoint(dragItem.dragTransform.position);
+        if (IsCanDropByYPos(localPosition.y) && IsCanDropByXPos(localPosition.x))
         {
-            var localPosition = startPosition.InverseTransformPoint(dragItem.dragTransform.position);
-            if (IsCanDropByYPos(localPosition.y) && IsCanDropByXPos(localPosition.x))
-            {
-                DropNewAttachedItem(dragItem,true);
-            }
-            else
-            {
-                OnItemOutsideAreaEvent?.Invoke(dragItem.dragTransform);
-            }
+            OnDropAtTowerEvent?.Invoke();
+            DropNewAttachedItem(dragItem, true);
+        }
+        else
+        {
+            OnDropOutsideTowerEvent?.Invoke();
+            OnItemOutsideAreaEvent?.Invoke(dragItem);
         }
     }
 
@@ -117,7 +114,11 @@ public class ForToyBlockScreenMediator : ScreenMediatorBase, IInitializable
 
     private bool IsCanDropByXPos(float xPos)
     {
-        if (droppedItems.Count == 0) return true;
+        if (droppedItems.Count == 0)
+        {
+            return true;
+        }
+
         var lastX = droppedItems.Last();
         var localX = lastX.dragTransform.localPosition.x;
         return xPos >= localX - toyBlockGameConfiguration.SizeOfToyBlockX / 2f &&

@@ -16,29 +16,35 @@ public class ForToyBlockScreen : MonoBehaviour
         forToyBlockScreenMediator.OnItemOutsideAreaEvent += OnItemAttachToTowerHandler;
     }
 
-    private void OnItemAttachToTowerHandler(Transform outsideAreaObject)
+    private void OnItemAttachToTowerHandler(IDraggable outsideAreaObject)
     {
-        outsideAreaObject.DOScale(Vector3.zero, 0.5f).SetEase(Ease.OutBounce).OnComplete(() =>
+        outsideAreaObject.LockDrag();
+        outsideAreaObject.dragTransform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.OutBounce).OnComplete(() =>
         {
-            var iPooled = outsideAreaObject.GetComponent<IPooledObject>();
+            var iPooled = outsideAreaObject.dragTransform.GetComponent<IPooledObject>();
             if (iPooled != null)
             {
-                outsideAreaObject.localScale=Vector3.one;
                 iPooled.ReturnToPool();
+                outsideAreaObject.dragTransform.localScale=Vector3.one;
+                outsideAreaObject.UnLockDrag();
             }
             else
             {
-                Destroy(outsideAreaObject.gameObject);
+                Destroy(outsideAreaObject.dragTransform.gameObject);
             }
         });
     }
 
-    private void OnItemAttachToTowerHandler(
-        (Transform droppedItem, Vector3 dropPosition) dropItemParameters)
+    private void OnItemAttachToTowerHandler((IDraggable droppedItem, Vector3 dropPosition) dropItemParameters)
     {
         var sequence = DOTween.Sequence();
-        sequence.Append(dropItemParameters.droppedItem.transform.DOLocalMove(dropItemParameters.dropPosition, 0.5f)
+        dropItemParameters.droppedItem.LockDrag();
+        sequence.Append(dropItemParameters.droppedItem.dragTransform.transform.DOLocalMove(dropItemParameters.dropPosition, 0.5f)
             .SetEase(Ease.OutBounce));
+        sequence.OnComplete(() =>
+        {
+            dropItemParameters.droppedItem.UnLockDrag();
+        });
     }
 
     private void Awake()

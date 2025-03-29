@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e333e2407e7d447db0f44fc60efa8fac, type: 3}
+  m_Name: LocalizationLibrary
+  m_EditorClassIdentifier: 
+  <Localizations>k__BackingField:
+  - <LocationID>k__BackingField: forTrashScreen
+    <LocalizationConfigurations>k__BackingField:
+    - <LocalizationType>k__BackingField: 0
+      <Text>k__BackingField: "\u041E\u0442\u043F\u0440\u0430\u0432\u0438\u043B\u0441\u044F
+        \u0432 \u044F\u043C\u0443!"
+    - <LocalizationType>k__BackingField: 1
+      <Text>k__BackingField: 
+  - <LocationID>k__BackingField: forToyBlockScreen
+    <LocalizationConfigurations>k__BackingField:
+    - <LocalizationType>k__BackingField: 0
+      <Text>k__BackingField: "\u041C\u044F\u0447\u0438\u043A \u043F\u043E\u043F\u0430\u043B"
+    - <LocalizationType>k__BackingField: 1
+      <Text>k__BackingField: 
+  - <LocationID>k__BackingField: notAPlayingField
+    <LocalizationConfigurations>k__BackingField:
+    - <LocalizationType>k__BackingField: 0
+      <Text>k__BackingField: "\u041C\u0438\u043C\u043E!"
+    - <LocalizationType>k__BackingField: 1
+      <Text>k__BackingField: 

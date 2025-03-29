@@ -4,25 +4,20 @@ using Zenject;
 
 public class TrashScreenMediator : ScreenMediatorBase, IInitializable
 {
-    [Inject] private ItemDragMediator itemDragMediator;
+    [Inject] private ItemDropProxy itemDropProxy;
 
     public event Action<Transform> OnItemDroppedOnTrashScreenEvent;
 
     public void Initialize()
     {
-        itemDragMediator.OnDragFinishEvent += OnDragFinishHandler;
+        itemDropProxy.OnDropForTrashScreenEvent += OnDropForTrashScreenHandler;
+        itemDropProxy.OnDropNotAPlayingFieldEvent +=
+            OnDropForTrashScreenHandler; // If you throw an item outside the play area, it will also fly into the trash. You can change it to another mechanic
     }
 
-    private void OnDragFinishHandler(IDraggable dragItem)
+    private void OnDropForTrashScreenHandler(IDraggable dragItem)
     {
-        ItemDrop(dragItem);
-    }
-    
-    private void ItemDrop(IDraggable dragItem)
-    {
-        if(IsLocatedWithinArena(dragItem.dragTransform.position))
-        {
-            OnItemDroppedOnTrashScreenEvent?.Invoke(dragItem.dragTransform);
-        }
+        dragItem.LockDrag();
+        OnItemDroppedOnTrashScreenEvent?.Invoke(dragItem.dragTransform);
     }
 }

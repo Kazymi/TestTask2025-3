@@ -9,8 +9,8 @@ public class ItemDragMediator : ITickable
 
     public event Action<(Vector2 mousePosition, IDraggable dragObject)> OnDragEvent;
     public event Action<bool> OnDragStatusChangeEvent;
-    public event Action<IDraggable> OnDragFinishEvent; 
-    public event Action<IDraggable> OnDragStartEvent; 
+    public event Action<IDraggable> OnDragFinishEvent;
+    public event Action<IDraggable> OnDragStartEvent;
 
     public void TryToAttachDragObject(IDraggable dragObject)
     {
@@ -22,6 +22,8 @@ public class ItemDragMediator : ITickable
         OnDragStatusChangeEvent?.Invoke(true);
         OnDragStartEvent?.Invoke(dragObject);
         attachedDragObject = dragObject;
+        Vector2 mousePosition = Input.mousePosition;
+        OnDragEvent?.Invoke((mousePosition, attachedDragObject));
     }
 
     public void TryToDetachDragObject(IDraggable dragObject)

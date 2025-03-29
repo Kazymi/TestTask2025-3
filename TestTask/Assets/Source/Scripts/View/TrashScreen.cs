@@ -48,13 +48,27 @@ public class TrashScreen : MonoBehaviour
             animatedObject.localPosition += new Vector3(flyingAnimationCurve.Evaluate(valFloat),
                 flyingAnimationCurve.Evaluate(valFloat), 0f) * flyingAnimationStrength;
         }));
-        
+
         sequence.Join(trash.DOScale(trashScaleForFly, flyingAnimationDuration));
         sequence.Join(animatedObject
-            .DOLocalRotate(new Vector3(0, 0, Random.Range(0, 360)),  flyingAnimationDuration));
-        sequence.Join(animatedObject.DOScale(Vector3.zero,  flyingAnimationDuration));
-        
+            .DOLocalRotate(new Vector3(0, 0, Random.Range(0, 360)), flyingAnimationDuration));
+        sequence.Join(animatedObject.DOScale(Vector3.zero, flyingAnimationDuration));
+
         sequence.Append(trash.DOShakeScale(trashScaleShakeDuration, trashScaleShakeStrength));
         sequence.Append(trash.DOScale(Vector3.one, trashScaleShakeStrength));
+        sequence.OnComplete(() =>
+        {
+            var pooled = animatedObject.GetComponent<IPooledObject>();
+            if (pooled != null)
+            {
+                pooled.ReturnToPool();
+                animatedObject.transform.localScale = Vector3.one;
+                animatedObject.transform.localRotation = Quaternion.identity;
+            }
+            else
+            {
+                Destroy(animatedObject.gameObject);
+            }
+        });
     }
 }

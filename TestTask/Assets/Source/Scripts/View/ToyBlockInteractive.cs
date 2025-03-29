@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -27,6 +28,14 @@ public class ToyBlockInteractive : MonoPooled, IPointerUpHandler, IPointerDownHa
     {
         attachedIndex = toyBlockIndex;
         toyBlockImage.sprite = itemSprite;
+    }
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        transform.DOKill();
+        transform.localScale=Vector3.one;
+        UnLockDrag();
     }
 
     public void OnPointerUp(PointerEventData eventData)
