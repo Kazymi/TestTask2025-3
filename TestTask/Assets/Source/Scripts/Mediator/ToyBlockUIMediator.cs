@@ -48,7 +48,7 @@ public class ToyBlockUIMediator : ITickable
     {
         if (isWaitingForFinishTouch)
         {
-            if (Input.touchCount > 0)
+            if (Input.touchCount == 0 && Input.GetMouseButton(0) == false)
             {
                 isWaitingForFinishTouch = false;
                 itemDragMediator.DetachCurrentDragObject();

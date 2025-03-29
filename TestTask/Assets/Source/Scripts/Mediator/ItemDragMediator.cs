@@ -22,8 +22,7 @@ public class ItemDragMediator : ITickable
         OnDragStatusChangeEvent?.Invoke(true);
         OnDragStartEvent?.Invoke(dragObject);
         attachedDragObject = dragObject;
-        Vector2 mousePosition = Input.mousePosition;
-        OnDragEvent?.Invoke((mousePosition, attachedDragObject));
+        Drag();
     }
 
     public void TryToDetachDragObject(IDraggable dragObject)
@@ -46,12 +45,24 @@ public class ItemDragMediator : ITickable
         }
     }
 
+    private void Drag()
+    {
+        if (Input.touchCount != 0)
+        {
+            var touchPosition = Input.GetTouch(0).position;
+            OnDragEvent?.Invoke((touchPosition, attachedDragObject));
+        }
+        else
+        {
+            var mousePosition = Input.mousePosition;
+            OnDragEvent?.Invoke((mousePosition, attachedDragObject));
+        }
+    }
     public void Tick()
     {
         if (attachedDragObject != null)
         {
-            Vector2 mousePosition = Input.mousePosition;
-            OnDragEvent?.Invoke((mousePosition, attachedDragObject));
+           Drag();
         }
     }
 }

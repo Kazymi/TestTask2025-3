@@ -23,7 +23,7 @@ MonoBehaviour:
   - <LocationID>k__BackingField: forToyBlockScreen
     <LocalizationConfigurations>k__BackingField:
     - <LocalizationType>k__BackingField: 0
-      <Text>k__BackingField: "\u041C\u044F\u0447\u0438\u043A \u043F\u043E\u043F\u0430\u043B"
+      <Text>k__BackingField: "\u041A\u0443\u0431\u0438\u043A \u043F\u043E\u043F\u0430\u043B"
     - <LocalizationType>k__BackingField: 1
       <Text>k__BackingField: 
   - <LocationID>k__BackingField: notAPlayingField
